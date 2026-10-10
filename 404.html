@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // Извлекаем ссылку из пути URL
+        // Формат: /<имя-репозитория>/https://...
+        var path = window.location.pathname;
+        var repoBase = '/' + path.split('/')[1] + '/';
+        var linkPart = path.substring(repoBase.length);
+        try {
+            linkPart = decodeURIComponent(linkPart);
+        } catch (e) {}
+
+        if (/^https?:/i.test(linkPart)) {
+            // Если в самой ссылке были ?параметры или #якорь — браузер вынес их отдельно, возвращаем обратно
+            linkPart += window.location.search + window.location.hash;
+            // Перенаправляем на index.html с параметром link
+            window.location.replace(repoBase + '?link=' + encodeURIComponent(linkPart));
+        } else {
+            window.location.replace(repoBase);
+        }
+    </script>
+</head>
+<body>
+    <p>Перенаправление...</p>
+</body>
+</html>
